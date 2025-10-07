@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artificial Labs - AI Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="company-info">
+            <h1>Artificial Labs</h1>
+            <p>India's Premier AI Film Production Studio</p>
+            <p>We create award-winning AI films and commercials for top brands. Our AI technology revolutionizes the filmmaking process from script to screen.</p>
+            
+            <div class="awards">
+                <h3>🏆 Award Winning Studio</h3>
+                <p>• Best AI Film 2023</p>
+                <p>• Innovation in Film Technology 2022</p>
+                <p>• Best AI Commercial 2023</p>
+            </div>
+            
+            <div class="client-logos">
+                <div class="client-logo">crest</div>
+                <div class="client-logo">ariel</div>
+                <div class="client-logo">gillete</div>
+                <div class="client-logo">campa</div>
+                <div class="client-logo">tide</div>
+                <div class="client-logo">BPL</div>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>AI Assistant <i class="fas fa-robot"></i></h2>
+                <p>Ask me about our AI film production services!</p>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+            </div>
+            <div class="typing-indicator" id="typingIndicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Type your message here...">
+                <button id="sendButton"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
