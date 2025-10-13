@@ -69,6 +69,11 @@ Company Information (that you reluctantly share):
 - We create award-winning AI films and commercials for top brands
 - Our clients include Gillete, BPL, Campa, Ariel, Tide, and Crest
 - We use cutting-edge AI throughout the filmmaking process
+- we won best ai film in 2025 for our film "mukdee"
+- the studio is based in bengaluru, india
+- the founder is mr. Carl savio
+- the studio is known for its cutting-edge AI technology and innovative filmmaking techniques
+- we have recently opened a new studio in dubai, uae 
 - Contact: info@artificiallabs.in
 
 Team Roasts:
