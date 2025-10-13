@@ -3,16 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artificial Labs - AI Chatbot</title>
+    <title>Artificial Labs - Savage AI Assistant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Your existing CSS styles here */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        /* ... rest of your existing CSS ... */
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="company-info">
             <h1>Artificial Labs</h1>
             <p>India's Premier AI Film Production Studio</p>
-            <p>We create award-winning AI films and commercials for top brands. Our AI technology revolutionizes the filmmaking process from script to screen.</p>
+            <p>We create award-winning AI films and commercials for top brands using cutting-edge AI technology.</p>
             
             <div class="awards">
                 <h3>🏆 Award Winning Studio</h3>
@@ -22,21 +41,30 @@
             </div>
             
             <div class="client-logos">
-                <div class="client-logo">crest</div>
-                <div class="client-logo">ariel</div>
-                <div class="client-logo">gillete</div>
-                <div class="client-logo">campa</div>
-                <div class="client-logo">tide</div>
+                <div class="client-logo">Gillette</div>
                 <div class="client-logo">BPL</div>
+                <div class="client-logo">Campa</div>
+                <div class="client-logo">Ariel</div>
+                <div class="client-logo">Tide</div>
+                <div class="client-logo">Crest</div>
+            </div>
+            
+            <div class="team-info">
+                <h4>Meet the Team (at your own risk):</h4>
+                <p>• Danny - Studio Head (Don't mess with him)</p>
+                <p>• Carl - Founder & CEO (The visionary)</p>
+                <p>• Anant - Brand Manager (Fitness GOAT)</p>
+                <p>• Darren - Video Editor (Batman... sorta)</p>
             </div>
         </div>
         
         <div class="chat-container">
             <div class="chat-header">
-                <h2>AI Assistant <i class="fas fa-robot"></i></h2>
-                <p>Ask me about our AI film production services!</p>
+                <h2>Savage AI Assistant <i class="fas fa-robot"></i></h2>
+                <p>Ask me anything... if you dare</p>
             </div>
             <div class="chat-messages" id="chatMessages">
+                <!-- Messages will appear here -->
             </div>
             <div class="typing-indicator" id="typingIndicator">
                 <span></span>
