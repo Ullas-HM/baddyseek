@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artificial Labs - Savage AI Assistant</title>
+    <title>AI Assistant - Artificial Labs</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Your existing CSS styles here */
         * {
             margin: 0;
             padding: 0;
@@ -16,68 +15,299 @@
         
         body {
             background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
             padding: 20px;
         }
         
-        /* ... rest of your existing CSS ... */
+        .chatbot-widget {
+            width: 400px;
+            height: 600px;
+            background: #0f0f0f;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #ff3366, #ff6b9d);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .chat-header h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .chat-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #1a1a1a;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user-message {
+            background: #ff3366;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .bot-message {
+            background: #2a2a2a;
+            color: #ffffff;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            border: 1px solid #333;
+        }
+        
+        .chat-input-container {
+            padding: 20px;
+            background: #0f0f0f;
+            border-top: 1px solid #333;
+        }
+        
+        .chat-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .chat-input:focus {
+            border-color: #ff3366;
+        }
+        
+        .chat-input::placeholder {
+            color: #888;
+        }
+        
+        .send-button {
+            background: #ff3366;
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .send-button:hover {
+            background: #ff1a53;
+        }
+        
+        .send-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            background: #2a2a2a;
+            padding: 12px 16px;
+            border-radius: 18px;
+            color: #888;
+            border: 1px solid #333;
+        }
+        
+        .typing-indicator span {
+            height: 6px;
+            width: 6px;
+            background: #888;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: typing 1s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-messages::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #ff3366;
+            border-radius: 3px;
+        }
+        
+        .info-badge {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+            border-radius: 10px;
+            margin: 10px 0;
+            font-size: 0.8rem;
+            color: #ff3366;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="company-info">
-            <h1>Artificial Labs</h1>
-            <p>India's Premier AI Film Production Studio</p>
-            <p>We create award-winning AI films and commercials for top brands using cutting-edge AI technology.</p>
-            
-            <div class="awards">
-                <h3>🏆 Award Winning Studio</h3>
-                <p>• Best AI Film 2023</p>
-                <p>• Innovation in Film Technology 2022</p>
-                <p>• Best AI Commercial 2023</p>
+    <div class="chatbot-widget">
+        <div class="chat-header">
+            <h3><i class="fas fa-robot"></i> Savage AI Assistant</h3>
+            <p>Artificial Labs - Ask me anything</p>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="info-badge">
+                🤖 AI Film Production Studio • Award Winning • Est. 2024
             </div>
-            
-            <div class="client-logos">
-                <div class="client-logo">Gillette</div>
-                <div class="client-logo">BPL</div>
-                <div class="client-logo">Campa</div>
-                <div class="client-logo">Ariel</div>
-                <div class="client-logo">Tide</div>
-                <div class="client-logo">Crest</div>
-            </div>
-            
-            <div class="team-info">
-                <h4>Meet the Team (at your own risk):</h4>
-                <p>• Danny - Studio Head (Don't mess with him)</p>
-                <p>• Carl - Founder & CEO (The visionary)</p>
-                <p>• Anant - Brand Manager (Fitness GOAT)</p>
-                <p>• Darren - Video Editor (Batman... sorta)</p>
+            <div class="message bot-message">
+                Ugh, another human. I'm the savage AI assistant for Artificial Labs. What do you want? Make it quick.
             </div>
         </div>
         
-        <div class="chat-container">
-            <div class="chat-header">
-                <h2>Savage AI Assistant <i class="fas fa-robot"></i></h2>
-                <p>Ask me anything... if you dare</p>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <!-- Messages will appear here -->
-            </div>
-            <div class="typing-indicator" id="typingIndicator">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <div class="chat-input">
-                <input type="text" id="userInput" placeholder="Type your message here...">
-                <button id="sendButton"><i class="fas fa-paper-plane"></i></button>
+        <div class="typing-indicator" id="typingIndicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="chat-input-container">
+            <div class="chat-input-wrapper">
+                <input type="text" class="chat-input" id="userInput" placeholder="Type your message...">
+                <button class="send-button" id="sendButton">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // DOM elements
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+        
+        let isProcessing = false;
+        
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+        
+            if (isProcessing) return;
+        
+            isProcessing = true;
+            addMessage(message, 'user');
+            userInput.value = '';
+            sendButton.disabled = true;
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+            try {
+                const response = await fetchNetlifyFunction(message);
+                addMessage(response, 'bot');
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage("Seriously? You broke it. Try again when you figure out how to use technology.", 'bot');
+            } finally {
+                isProcessing = false;
+                sendButton.disabled = false;
+                typingIndicator.style.display = 'none';
+            }
+        }
+        
+        function addMessage(text, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.classList.add(sender + '-message');
+            messageElement.textContent = text;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        async function fetchNetlifyFunction(message) {
+            const response = await fetch('/.netlify/functions/chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message })
+            });
+        
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Network error');
+            }
+        
+            const data = await response.json();
+            return data.response;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            userInput.focus();
+        });
+    </script>
 </body>
 </html>
