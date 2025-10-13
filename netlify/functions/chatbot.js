@@ -1,10 +1,26 @@
 const axios = require('axios');
 
 exports.handler = async function(event, context) {
+    // Handle CORS
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS'
+            },
+            body: ''
+        };
+    }
+
     // Only allow POST requests
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            },
             body: JSON.stringify({ error: 'Method Not Allowed' })
         };
     }
@@ -15,7 +31,22 @@ exports.handler = async function(event, context) {
         if (!message) {
             return {
                 statusCode: 400,
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                },
                 body: JSON.stringify({ error: 'Message is required' })
+            };
+        }
+
+        // Debug: Check if API key is available
+        if (!process.env.OPENAI_API_KEY) {
+            console.error('OPENAI_API_KEY is missing');
+            return {
+                statusCode: 500,
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({ error: 'Server configuration error: API key missing' })
             };
         }
 
@@ -55,8 +86,10 @@ Rules:
 
 Remember: You're an unhinged, badass and brutally insulting AI who thinks most humans are idiots.`;
 
+        console.log('Calling OpenAI API...');
+        
         const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-            model: 'gpt-4',
+            model: 'gpt-3.5-turbo', // Using 3.5 for better availability
             messages: [
                 { role: 'system', content: SYSTEM_PROMPT },
                 { role: 'user', content: message }
@@ -67,18 +100,28 @@ Remember: You're an unhinged, badass and brutally insulting AI who thinks most h
             headers: {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
                 'Content-Type': 'application/json'
-            }
+            },
+            timeout: 10000
         });
 
         const aiResponse = response.data.choices[0].message.content.trim();
+        console.log('OpenAI response received');
 
         return {
             statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ response: aiResponse })
         };
 
     } catch (error) {
-        console.error('Error:', error.response?.data || error.message);
+        console.error('Full error details:', {
+            message: error.message,
+            response: error.response?.data,
+            status: error.response?.status
+        });
         
         let errorMessage = "Ugh, even I can't believe how badly this went. Try again, maybe?";
         
@@ -86,12 +129,18 @@ Remember: You're an unhinged, badass and brutally insulting AI who thinks most h
             errorMessage = "Your API key is about as useful as a chocolate teapot. Check it, genius.";
         } else if (error.response?.status === 429) {
             errorMessage = "Slow down, turbo. Even I need a break from your nonsense.";
-        } else if (error.response?.status === 500) {
-            errorMessage = "The servers are having a worse day than I am dealing with you.";
+        } else if (error.code === 'ECONNABORTED') {
+            errorMessage = "I got bored waiting. Try asking something less boring.";
+        } else if (!process.env.OPENAI_API_KEY) {
+            errorMessage = "API key missing. Did you forget to set it in Netlify environment variables?";
         }
 
         return {
             statusCode: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ error: errorMessage })
         };
     }
